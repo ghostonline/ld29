@@ -17,6 +17,10 @@ class GameScene extends Scene
 		add(monster);
 		ship = new Ship(this);
 		add(ship);
+		var icon = new AlertIcon();
+		icon.x = 200;
+		icon.y = 200;
+		add(icon);
 	}
 
 	public function onShipDestroy(ship:Ship)

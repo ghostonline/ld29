@@ -22,6 +22,7 @@ class Ship extends Entity
 	var health:Float;
 	var game:GameScene;
 	var chargeTimer:Float;
+	var alert:AlertIcon;
 
 	public function new(game:GameScene){
 		super(0,0);
@@ -31,10 +32,21 @@ class Ship extends Entity
 		verticalGraphic.centerOrigin();
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
+		alert = new AlertIcon();
 		type = collisionType;
 		visible = false;
 		this.game = game;
 		chargeTimer = 0;
+	}
+
+	override public function added()
+	{
+		scene.add(alert);
+	}
+
+	override public function removed()
+	{
+		alert.scene.remove(alert);
 	}
 
 	public function init(x:Float, y:Float, wanderArea:Rectangle, health:Float)
@@ -43,6 +55,7 @@ class Ship extends Entity
 		this.wanderArea = wanderArea;
 		this.health = health;
 		visible = true;
+		alert.visible = true;
 		aquireWanderTarget();
 	}
 
@@ -97,6 +110,9 @@ class Ship extends Entity
 			var charge = DepthCharge.initCharge(x, y, x + target.x, y + target.y, chargeSpeed);
 			if (charge != null) { scene.add(charge); }
 		}
+		
+		alert.x = x;
+		alert.y = y;
 	}
 
 }
