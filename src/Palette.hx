@@ -8,7 +8,7 @@ class Palette
         public static inline var color06 = Macro.color(52, 101, 36);
         public static inline var color07 = Macro.color(208, 70, 72);
         public static inline var color08 = Macro.color(117, 113, 97);
-        public static inline var color09 = Macro.color(89, 125, 206);
+        public static inline var lightBlue = Macro.color(89, 125, 206);
         public static inline var color10 = Macro.color(210, 125, 44);
         public static inline var color11 = Macro.color(133, 149, 161);
         public static inline var color12 = Macro.color(109, 170, 44);
