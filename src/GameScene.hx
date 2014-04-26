@@ -12,10 +12,11 @@ class GameScene extends Scene
 	{
 		super();
 		ExplosiveSachel.initPool(25);
+		Mine.initPool(50);
 		destroyed = new Array<Ship>();
 		monster = new Monster();
 		add(monster);
-		ship = new Ship(this);
+		ship = new Miner(this);
 		add(ship);
 		var icon = new AlertIcon();
 		icon.x = 200;
