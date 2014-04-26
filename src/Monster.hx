@@ -162,7 +162,7 @@ class Monster extends Entity
 		}
 		else
 		{
-			layer = 0;
+			layer = Layering.surface;
 		}
 
 		var frame:Image = null;
