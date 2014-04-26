@@ -119,7 +119,7 @@ class Ship extends Entity
 			}
 
 			chargeTimer = chargeCooldown;
-			var charge = DepthCharge.initCharge(x, y, x + target.x, y + target.y, chargeSpeed);
+			var charge = ExplosiveSachel.create(x, y, x + target.x, y + target.y, chargeSpeed);
 			if (charge != null) { scene.add(charge); }
 		}
 	}

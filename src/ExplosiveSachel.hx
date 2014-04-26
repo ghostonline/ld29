@@ -4,26 +4,26 @@ import com.haxepunk.tweens.motion.LinearMotion;
 import com.haxepunk.Tween;
 import com.haxepunk.HXP;
 
-class DepthCharge extends Entity
+class ExplosiveSachel extends Entity
 {
-	public static inline var collisionType = "depthcharge";
+	public static inline var collisionType = "explosivesachel";
 
 	static var pool;
 	static var lastTaken = 0;
 
 	public static function initPool(count:Int)
 	{
-		pool = new Array<DepthCharge>();
+		pool = new Array<ExplosiveSachel>();
 		for (ii in 0...count)
 		{
-			var charge = new DepthCharge();
+			var charge = new ExplosiveSachel();
 			pool.push(charge);
 		}
 	}
 
-	public static function initCharge(x:Float, y:Float, targetX:Float, targetY:Float, throwSpeed:Float)
+	public static function create(x:Float, y:Float, targetX:Float, targetY:Float, throwSpeed:Float)
 	{
-		var charge:DepthCharge = null;
+		var charge:ExplosiveSachel = null;
 		for (ii in 0...pool.length)
 		{
 			var idx = (lastTaken + ii) % pool.length;

@@ -11,11 +11,11 @@ class GameScene extends Scene
 	public function new()
 	{
 		super();
-		DepthCharge.initPool(25);
+		ExplosiveSachel.initPool(25);
 		destroyed = new Array<Ship>();
 		monster = new Monster();
 		add(monster);
-		ship = new Scanner(this);
+		ship = new Ship(this);
 		add(ship);
 		var icon = new AlertIcon();
 		icon.x = 200;
