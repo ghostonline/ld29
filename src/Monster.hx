@@ -2,14 +2,27 @@ import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.math.Vector;
 import flash.geom.Point;
+import com.haxepunk.HXP;
+
+enum SwimState
+{
+	SurfaceSwim;
+	Attacking;
+}
 
 class Monster extends Entity
 {
-	static inline var speed = 4;
+	static inline var swimSpeed = 4;
+	static inline var attackSpeed = 1;
+	static inline var minAttackDuration = 1;
+
 	static var tmpDirection:Point;
 
 	var horizontalGraphic:Image;
 	var verticalGraphic:Image;
+	var attackGraphic:Image;
+	var swimState:SwimState;
+	var attackTimer:Float;
 
 	public function new()
 	{
@@ -18,9 +31,13 @@ class Monster extends Entity
 		horizontalGraphic.centerOrigin();
 		verticalGraphic = Image.createRect(20, 30, Palette.blue);
 		verticalGraphic.centerOrigin();
+		attackGraphic = Image.createRect(30, 30, Palette.red);
+		attackGraphic.centerOrigin();
+		attackGraphic.originY = attackGraphic.height;
 		graphic = horizontalGraphic;
 		setHitboxTo(horizontalGraphic);
 		tmpDirection = new Point();
+		swimState = SwimState.SurfaceSwim;
 	}
 
 	public function init(x:Float, y:Float)
@@ -28,10 +45,28 @@ class Monster extends Entity
 		this.x = x; this.y = y;
 	}
 
-	override public function update()
+	function surfaceSwimStateUpdate()
 	{
-		super.update();
-		
+		if (Controller.attack())
+		{
+			swimState = SwimState.Attacking;
+			attackTimer = 0;
+		}
+		movementUpdate(swimSpeed, horizontalGraphic, verticalGraphic);
+	}
+
+	function attackStateUpdate()
+	{
+		attackTimer += HXP.elapsed;
+		if (!Controller.attack() && attackTimer > minAttackDuration)
+		{
+			swimState = SwimState.SurfaceSwim;
+		}
+		movementUpdate(attackSpeed, attackGraphic, attackGraphic);
+	}
+
+	function movementUpdate(speed:Float, horizontal:Image, vertical:Image)
+	{
 		tmpDirection.x = 0;
 		tmpDirection.y = 0;
 		if (Controller.down())
@@ -56,17 +91,31 @@ class Monster extends Entity
 			var frame:Image = null;
 			if (Math.abs(tmpDirection.x) > Math.abs(tmpDirection.y))
 			{
-				frame = horizontalGraphic;
+				frame = horizontal;
 			}
 			else
 			{
-				frame = verticalGraphic;
+				frame = vertical;
 			}
+
 			setHitboxTo(frame);
 			graphic = frame;
 
 			tmpDirection.normalize(speed);
 			moveBy(tmpDirection.x, tmpDirection.y);
+		}
+	}
+
+	override public function update()
+	{
+		super.update();
+
+		switch(swimState)
+		{
+			case SwimState.SurfaceSwim:
+				surfaceSwimStateUpdate();
+			case SwimState.Attacking:
+				attackStateUpdate();
 		}
 	}
 }
