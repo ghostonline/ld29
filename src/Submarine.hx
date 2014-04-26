@@ -5,9 +5,29 @@ class Submarine extends Ship
 
 	static inline var maxPursuitTime = 3;
 	static inline var chargeCooldown = 1.5;
+	static inline var minFireRange = 50;
 	
 	public function new(game:GameScene){
 		super(game);
+	}
+
+	override function aquireWanderTarget()
+	{
+		currentTarget.x = HXP.random * wanderArea.width + wanderArea.x;
+		currentTarget.y = HXP.random * wanderArea.height + wanderArea.y;
+
+		var dX = Math.abs(currentTarget.x - x);
+		var dY = Math.abs(currentTarget.y - y);
+		if (dX > dY)
+		{
+			graphic = horizontalGraphic;
+			setHitboxTo(horizontalGraphic);
+		}
+		else
+		{
+			graphic = verticalGraphic;
+			setHitboxTo(verticalGraphic);
+		}
 	}
 
 	override function updateSearching()
@@ -17,8 +37,8 @@ class Submarine extends Ship
 		if (monster.isVisibleFromSurface())
 		{
 			pursuitTimer = maxPursuitTime;
-			currentTarget.x = lastKnownPosition.x = monster.x;
-			currentTarget.y = lastKnownPosition.y = monster.y;
+			lastKnownPosition.x = monster.x;
+			lastKnownPosition.y = monster.y;
 			alert.visible = true;
 		}
 	}
@@ -28,10 +48,14 @@ class Submarine extends Ship
 		chargeTimer -= HXP.elapsed;
 		if (chargeTimer < 0 && pursuitTimer > 0)
 		{
-			chargeTimer = chargeCooldown;
-			var angle = HXP.angle(x, y, lastKnownPosition.x, lastKnownPosition.y);
-			var charge = Torpedo.create(x, y, angle);
-			if (charge != null) { scene.add(charge); }
+			var distance = HXP.distance(x, y, lastKnownPosition.x, lastKnownPosition.y);
+			if (distance > minFireRange)
+			{
+				chargeTimer = chargeCooldown;
+				var angle = HXP.angle(x, y, lastKnownPosition.x, lastKnownPosition.y);
+				var charge = Torpedo.create(x, y, angle);
+				if (charge != null) { scene.add(charge); }
+			}
 		}
 	}
 }
