@@ -11,9 +11,12 @@ class Ship extends Entity
 
 	static inline var speed = 1;
 	static inline var minTargetDistance = 1;
-	static inline var chargeCooldown = 3;
+	static inline var chargeCooldown = 1;
 	static inline var chargeSpeed = 2;
 	static inline var maxChargeDistance = 150;
+	static inline var minLaunchDistance = 50;
+	static inline var maxLaunchDistance = 200;
+	static inline var maxPursuitTime = 5;
 
 	var horizontalGraphic:Image;
 	var verticalGraphic:Image;
@@ -23,6 +26,8 @@ class Ship extends Entity
 	var game:GameScene;
 	var chargeTimer:Float;
 	var alert:AlertIcon;
+	var lastKnownPosition:Point;
+	var pursuitTimer:Float;
 
 	public function new(game:GameScene){
 		super(0,0);
@@ -33,10 +38,12 @@ class Ship extends Entity
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
 		alert = new AlertIcon();
+		lastKnownPosition = new Point();
 		type = collisionType;
 		visible = false;
 		this.game = game;
 		chargeTimer = 0;
+		pursuitTimer = 0;
 	}
 
 	override public function added()
@@ -55,7 +62,7 @@ class Ship extends Entity
 		this.wanderArea = wanderArea;
 		this.health = health;
 		visible = true;
-		alert.visible = true;
+		alert.visible = false;
 		aquireWanderTarget();
 	}
 
@@ -89,19 +96,24 @@ class Ship extends Entity
 	override public function update()
 	{
 		super.update();
-		moveTowards(currentTarget.x, currentTarget.y, speed);
-		layer = Math.floor(-y);
-		if (HXP.distanceSquared(x, y, currentTarget.x, currentTarget.y) < minTargetDistance * minTargetDistance)
-		{
-			aquireWanderTarget();
-		}
 
-		chargeTimer -= HXP.elapsed;
-		if (chargeTimer < 0)
+		var monster = game.findNearestMonster(x, y);
+		
+		pursuitTimer -= HXP.elapsed;
+		if (monster.isVisibleFromSurface())
 		{
-			var monster = game.findNearestMonster(x, y);
-			var target = new Point(monster.x - x, monster.y - y);
-			if (target.length > maxChargeDistance)
+			pursuitTimer = maxPursuitTime;
+			currentTarget.x = lastKnownPosition.x = monster.x;
+			currentTarget.y = lastKnownPosition.y = monster.y;
+			alert.visible = true;
+		}
+		
+		chargeTimer -= HXP.elapsed;
+		var target = new Point(lastKnownPosition.x - x, lastKnownPosition.y - y);
+		var targetLength = target.length;
+		if (targetLength < maxLaunchDistance && chargeTimer < 0 && pursuitTimer > 0)
+		{
+			if (targetLength > maxChargeDistance)
 			{
 				target.normalize(maxChargeDistance);
 			}
@@ -110,9 +122,26 @@ class Ship extends Entity
 			var charge = DepthCharge.initCharge(x, y, x + target.x, y + target.y, chargeSpeed);
 			if (charge != null) { scene.add(charge); }
 		}
+
+		var minDistance = minTargetDistance;		
+		if (pursuitTimer > 0)
+		{
+			minDistance = minLaunchDistance;
+		}
 		
+		if (HXP.distanceSquared(x, y, currentTarget.x, currentTarget.y) > minDistance * minDistance)
+		{
+			moveTowards(currentTarget.x, currentTarget.y, speed);
+		}
+		else if (pursuitTimer < 0)
+		{
+			aquireWanderTarget();
+		}
+		
+		layer = Math.floor(-y);
 		alert.x = x;
-		alert.y = y;
+		alert.y = y;		
+		alert.visible = pursuitTimer > 0;
 	}
 
 }

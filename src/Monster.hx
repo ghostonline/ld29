@@ -53,6 +53,11 @@ class Monster extends Entity
 	{
 	}
 
+	public function isVisibleFromSurface()
+	{
+		return swimState == SwimState.Attacking;
+	}
+
 	public function canTakeTopDamage()
 	{
 		return swimState == SwimState.Attacking;
