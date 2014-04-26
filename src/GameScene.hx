@@ -5,7 +5,7 @@ import flash.geom.Rectangle;
 class GameScene extends Scene
 {
 	static inline var initialLife = 5;
-	
+
 	var monster:Monster;
 	var ship:Ship;
 	var destroyed:Array<Ship>;
@@ -26,7 +26,7 @@ class GameScene extends Scene
 		Mine.initPool(50);
 		Torpedo.initPool(25);
 		destroyed = new Array<Ship>();
-		monster = new Monster();
+		monster = new Monster(this);
 		add(monster);
 		ship = new Submarine(this);
 		add(ship);
@@ -35,6 +35,12 @@ class GameScene extends Scene
 	public function onShipDestroy(ship:Ship)
 	{
 		destroyed.push(ship);
+	}
+
+	public function onMonsterHit(monster:Monster)
+	{
+		--life;
+		hud.setLife(life);
 	}
 
 	public function findNearestMonster(x:Float, y:Float)

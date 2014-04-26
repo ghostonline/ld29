@@ -28,10 +28,12 @@ class Monster extends Entity
 	var attackPreparation:Float;
 	var marked:Bool;
 	var alert:AlertIcon;
+	var game:GameScene;
 
-	public function new()
+	public function new(game:GameScene)
 	{
 		super(0,0);
+		this.game = game;
 		horizontalGraphic = Image.createRect(40, 20, Palette.blue);
 		horizontalGraphic.centerOrigin();
 		verticalGraphic = Image.createRect(20, 30, Palette.blue);
@@ -71,7 +73,7 @@ class Monster extends Entity
 
 	public function takeDamage()
 	{
-		trace("OW!");
+		game.onMonsterHit(this);
 	}
 
 	public function isVisibleFromSurface()
