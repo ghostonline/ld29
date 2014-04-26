@@ -11,7 +11,7 @@ class Ship extends Entity
 
 	static inline var speed = 1;
 	static inline var minTargetDistance = 1;
-	static inline var chargeCooldown = 1;
+	static inline var chargeCooldown = 3;
 	static inline var chargeSpeed = 2;
 	static inline var maxChargeDistance = 150;
 
