@@ -1,6 +1,6 @@
 import com.haxepunk.Scene;
 
-class MainScene extends Scene
+class GameScene extends Scene
 {
 	public override function begin()
 	{
