@@ -71,7 +71,8 @@ class Torpedo extends Entity
 		super.update();
 		if (!visible) return;
 
-		moveBy(direction.x, direction.y);
+		var factor = Macro.smoothstep(HXP.clamp(defaultLife - lifeTimer, 0, 1) / 2) * 2;
+		moveBy(direction.x * factor, direction.y * factor);
 
 		var e = collide(Monster.collisionType, x, y);
 		if (e != null)
