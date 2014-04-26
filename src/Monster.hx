@@ -16,7 +16,7 @@ class Monster extends Entity
 	static inline var attackSpeed = 1;
 	static inline var minAttackDuration = 1;
 
-	static var tmpDirection:Point;
+	static var lastDirection:Point;
 
 	var horizontalGraphic:Image;
 	var verticalGraphic:Image;
@@ -36,7 +36,7 @@ class Monster extends Entity
 		attackGraphic.originY = attackGraphic.height;
 		graphic = horizontalGraphic;
 		setHitboxTo(horizontalGraphic);
-		tmpDirection = new Point();
+		lastDirection = new Point();
 		swimState = SwimState.SurfaceSwim;
 	}
 
@@ -47,63 +47,77 @@ class Monster extends Entity
 
 	function surfaceSwimStateUpdate()
 	{
+		movementUpdate(swimSpeed);
 		if (Controller.attack())
 		{
 			swimState = SwimState.Attacking;
 			attackTimer = 0;
+			updateVisibility();
 		}
-		movementUpdate(swimSpeed, horizontalGraphic, verticalGraphic);
 	}
 
 	function attackStateUpdate()
 	{
+		movementUpdate(attackSpeed);
 		attackTimer += HXP.elapsed;
 		if (!Controller.attack() && attackTimer > minAttackDuration)
 		{
 			swimState = SwimState.SurfaceSwim;
+			updateVisibility();
 		}
-		movementUpdate(attackSpeed, attackGraphic, attackGraphic);
 	}
 
-	function movementUpdate(speed:Float, horizontal:Image, vertical:Image)
+	function movementUpdate(speed:Float)
 	{
-		tmpDirection.x = 0;
-		tmpDirection.y = 0;
+		lastDirection.x = 0;
+		lastDirection.y = 0;
 		if (Controller.down())
 		{
-			tmpDirection.y += 1;
+			lastDirection.y += 1;
 		}
 		if (Controller.up())
 		{
-			tmpDirection.y -= 1;
+			lastDirection.y -= 1;
 		}
 		if (Controller.left())
 		{
-			tmpDirection.x -= 1;
+			lastDirection.x -= 1;
 		}
 		if (Controller.right())
 		{
-			tmpDirection.x += 1;
+			lastDirection.x += 1;
 		}
 
-		if (tmpDirection.x != 0 || tmpDirection.y != 0)
+		if (lastDirection.x != 0 || lastDirection.y != 0)
 		{
-			var frame:Image = null;
-			if (Math.abs(tmpDirection.x) > Math.abs(tmpDirection.y))
-			{
-				frame = horizontal;
-			}
-			else
-			{
-				frame = vertical;
-			}
-
-			setHitboxTo(frame);
-			graphic = frame;
-
-			tmpDirection.normalize(speed);
-			moveBy(tmpDirection.x, tmpDirection.y);
+			updateVisibility();
+			lastDirection.normalize(speed);
+			moveBy(lastDirection.x, lastDirection.y);
 		}
+	}
+
+	function updateVisibility()
+	{
+		var horizontal = horizontalGraphic;
+		var vertical = verticalGraphic;
+		if (swimState == SwimState.Attacking)
+		{
+			horizontal = attackGraphic;
+			vertical = attackGraphic;
+		}
+
+		var frame:Image = null;
+		if (Math.abs(lastDirection.x) > Math.abs(lastDirection.y))
+		{
+			frame = horizontal;
+		}
+		else
+		{
+			frame = vertical;
+		}
+
+		setHitboxTo(frame);
+		graphic = frame;
 	}
 
 	override public function update()
