@@ -6,6 +6,9 @@ import com.haxepunk.HXP;
 
 class Ship extends Entity
 {
+	public static inline var collisionType = "ship";
+	public static inline var defaultHealth = 3;
+
 	static inline var speed = 1;
 	static inline var minTargetDistance = 1;
 
@@ -13,6 +16,7 @@ class Ship extends Entity
 	var verticalGraphic:Image;
 	var currentTarget:Point;
 	var wanderArea:Rectangle;
+	var health:Float;
 
 	public function new(){
 		super(0,0);
@@ -24,13 +28,15 @@ class Ship extends Entity
 		setHitboxTo(horizontalGraphic);
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
+		type = collisionType;
 	}
 
-	public function init(x:Float, y:Float, wanderArea:Rectangle)
+	public function init(x:Float, y:Float, wanderArea:Rectangle, health:Float)
 	{
 		this.x = x; this.y = y;
 		this.wanderArea = wanderArea;
 		aquireWanderTarget();
+		this.health = health;
 	}
 
 	function aquireWanderTarget()
@@ -49,6 +55,15 @@ class Ship extends Entity
 		{
 			graphic = verticalGraphic;
 			setHitboxTo(verticalGraphic);
+		}
+	}
+
+	public function takeDamage(monster:Monster)
+	{
+		health -= 1;
+		if (health <= 0)
+		{
+			scene.remove(this);
 		}
 	}
 

@@ -23,6 +23,6 @@ class GameScene extends Scene
 		monster.init(100, 100);
 		var shipWanderArea = new Rectangle(0, 0, HXP.screen.width, HXP.screen.height);
 		shipWanderArea.inflate(-50, -50);
-		ship.init(200, 100, shipWanderArea);
+		ship.init(200, 100, shipWanderArea, Ship.defaultHealth);
 	}
 }

@@ -12,9 +12,11 @@ enum SwimState
 
 class Monster extends Entity
 {
+	public static inline var collisionType = "monster";
 	static inline var swimSpeed = 4;
 	static inline var attackSpeed = 1;
 	static inline var minAttackDuration = 1;
+	static inline var attackInterval = 0.75;
 
 	static var lastDirection:Point;
 
@@ -23,6 +25,7 @@ class Monster extends Entity
 	var attackGraphic:Image;
 	var swimState:SwimState;
 	var attackTimer:Float;
+	var attackPreparation:Float;
 
 	public function new()
 	{
@@ -38,6 +41,7 @@ class Monster extends Entity
 		setHitboxTo(horizontalGraphic);
 		lastDirection = new Point();
 		swimState = SwimState.SurfaceSwim;
+		type = collisionType;
 	}
 
 	public function init(x:Float, y:Float)
@@ -52,6 +56,7 @@ class Monster extends Entity
 		{
 			swimState = SwimState.Attacking;
 			attackTimer = 0;
+			attackPreparation = 0;
 			updateVisibility();
 		}
 	}
@@ -60,6 +65,18 @@ class Monster extends Entity
 	{
 		movementUpdate(attackSpeed);
 		attackTimer += HXP.elapsed;
+		attackPreparation += HXP.elapsed;
+		if (attackPreparation >= attackInterval)
+		{
+			attackPreparation = 0;
+			var e = collide(Ship.collisionType, x, y);
+			if (e != null)
+			{
+				var ship = cast(e, Ship);
+				ship.takeDamage(this);
+			}
+		}
+
 		if (!Controller.attack() && attackTimer > minAttackDuration)
 		{
 			swimState = SwimState.SurfaceSwim;
