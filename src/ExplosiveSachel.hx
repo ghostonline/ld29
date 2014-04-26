@@ -8,35 +8,16 @@ class ExplosiveSachel extends Entity
 {
 	public static inline var collisionType = "explosivesachel";
 
-	static var pool:Array<ExplosiveSachel>;
-	static var lastTaken = 0;
+	static var pool = new Pool<ExplosiveSachel>();
 
 	public static function initPool(count:Int)
 	{
-		pool = new Array<ExplosiveSachel>();
-		for (ii in 0...count)
-		{
-			var charge = new ExplosiveSachel();
-			pool.push(charge);
-		}
+		pool.initPool(count, function() { return new ExplosiveSachel(); });
 	}
 
 	public static function create(x:Float, y:Float, targetX:Float, targetY:Float, throwSpeed:Float)
 	{
-		var charge:ExplosiveSachel = null;
-		for (ii in 0...pool.length)
-		{
-			var idx = (lastTaken + ii) % pool.length;
-			if (!pool[idx].visible)
-			{
-				charge = pool[idx];
-				charge.init(x, y, targetX, targetY, throwSpeed);
-				++lastTaken;
-				break;
-			}
-		}
-
-		return charge;
+		return pool.get(function (instance) { instance.init(x, y, targetX, targetY, throwSpeed); });
 	}
 
 	static inline var maxHeight = 25;

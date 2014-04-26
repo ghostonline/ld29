@@ -9,35 +9,16 @@ class Torpedo extends Entity
 {
 	public static inline var collisionType = "torpedo";
 
-	static var pool:Array<Torpedo>;
-	static var lastTaken = 0;
+	static var pool = new Pool<Torpedo>();
 
 	public static function initPool(count:Int)
 	{
-		pool = new Array<Torpedo>();
-		for (ii in 0...count)
-		{
-			var charge = new Torpedo();
-			pool.push(charge);
-		}
+		pool.initPool(count, function() { return new Torpedo(); });
 	}
 
 	public static function create(x:Float, y:Float, angle:Float)
 	{
-		var charge:Torpedo = null;
-		for (ii in 0...pool.length)
-		{
-			var idx = (lastTaken + ii) % pool.length;
-			if (!pool[idx].visible)
-			{
-				charge = pool[idx];
-				charge.init(x, y, angle);
-				++lastTaken;
-				break;
-			}
-		}
-
-		return charge;
+		return pool.get(function (instance) { instance.init(x, y, angle); });
 	}
 
 	static inline var defaultLife = 4;

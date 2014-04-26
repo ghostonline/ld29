@@ -8,34 +8,16 @@ class Mine extends Entity
 {
 	public static inline var collisionType = "mine";
 
-	static var pool:Array<Mine>;
-	static var lastTaken = 0;
+	static var pool = new Pool<Mine>();
 
 	public static function initPool(count:Int)
 	{
-		pool = new Array<Mine>();
-		for (ii in 0...count)
-		{
-			var charge = new Mine();
-			pool.push(charge);
-		}
+		pool.initPool(count, function() { return new Mine(); });
 	}
 
 	public static function create(x:Float, y:Float)
 	{
-		var charge:Mine = null;
-		for (ii in 0...pool.length)
-		{
-			var idx = (lastTaken + ii) % pool.length;
-			if (!pool[idx].visible)
-			{
-				charge = pool[idx];
-				charge.init(x, y);
-				++lastTaken;
-				break;
-			}
-		}
-
+		var charge = pool.get(function (mine) { mine.init(x, y); });
 		return charge;
 	}
 
