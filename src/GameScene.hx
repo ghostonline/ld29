@@ -15,7 +15,7 @@ class GameScene extends Scene
 		destroyed = new Array<Ship>();
 		monster = new Monster();
 		add(monster);
-		ship = new Ship(this);
+		ship = new Scanner(this);
 		add(ship);
 		var icon = new AlertIcon();
 		icon.x = 200;

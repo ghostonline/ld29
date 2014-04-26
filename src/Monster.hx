@@ -26,6 +26,8 @@ class Monster extends Entity
 	var swimState:SwimState;
 	var attackTimer:Float;
 	var attackPreparation:Float;
+	var marked:Bool;
+	var alert:AlertIcon;
 
 	public function new()
 	{
@@ -42,15 +44,34 @@ class Monster extends Entity
 		lastDirection = new Point();
 		swimState = SwimState.SurfaceSwim;
 		type = collisionType;
+		marked = false;
+		alert = AlertIcon.createArrow();
 	}
 
 	public function init(x:Float, y:Float)
 	{
 		this.x = x; this.y = y;
 	}
+	
+	public function setMarked(marked:Bool)
+	{
+		this.marked = marked;
+		alert.visible = this.marked;
+	}
+
+	override public function added()
+	{
+		scene.add(alert);
+	}
+
+	override public function removed()
+	{
+		alert.scene.remove(alert);
+	}
 
 	public function takeDamage()
 	{
+		trace("OW!");
 	}
 
 	public function isVisibleFromSurface()
@@ -124,6 +145,8 @@ class Monster extends Entity
 			lastDirection.normalize(speed);
 			moveBy(lastDirection.x, lastDirection.y);
 			updateVisibility();
+			alert.x = x;
+			alert.y = y;
 		}
 	}
 

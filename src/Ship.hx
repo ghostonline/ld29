@@ -8,6 +8,7 @@ class Ship extends Entity
 {
 	public static inline var collisionType = "ship";
 	public static inline var defaultHealth = 3;
+	public static inline var maxPursuitTime = 5;
 
 	static inline var speed = 1;
 	static inline var minTargetDistance = 1;
@@ -16,7 +17,6 @@ class Ship extends Entity
 	static inline var maxChargeDistance = 150;
 	static inline var minLaunchDistance = 50;
 	static inline var maxLaunchDistance = 200;
-	static inline var maxPursuitTime = 5;
 
 	var horizontalGraphic:Image;
 	var verticalGraphic:Image;
@@ -37,7 +37,7 @@ class Ship extends Entity
 		verticalGraphic.centerOrigin();
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
-		alert = new AlertIcon();
+		alert = AlertIcon.createExclamation();
 		lastKnownPosition = new Point();
 		type = collisionType;
 		visible = false;
