@@ -11,6 +11,9 @@ class Ship extends Entity
 
 	static inline var speed = 1;
 	static inline var minTargetDistance = 1;
+	static inline var chargeCooldown = 1;
+	static inline var chargeSpeed = 2;
+	static inline var maxChargeDistance = 150;
 
 	var horizontalGraphic:Image;
 	var verticalGraphic:Image;
@@ -18,6 +21,7 @@ class Ship extends Entity
 	var wanderArea:Rectangle;
 	var health:Float;
 	var game:GameScene;
+	var chargeTimer:Float;
 
 	public function new(game:GameScene){
 		super(0,0);
@@ -25,13 +29,12 @@ class Ship extends Entity
 		horizontalGraphic.centerOrigin();
 		verticalGraphic = Image.createRect(10, 15, Palette.brown);
 		verticalGraphic.centerOrigin();
-		//graphic = horizontalGraphic;
-		//setHitboxTo(horizontalGraphic);
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
 		type = collisionType;
 		visible = false;
 		this.game = game;
+		chargeTimer = 0;
 	}
 
 	public function init(x:Float, y:Float, wanderArea:Rectangle, health:Float)
@@ -78,6 +81,21 @@ class Ship extends Entity
 		if (HXP.distanceSquared(x, y, currentTarget.x, currentTarget.y) < minTargetDistance * minTargetDistance)
 		{
 			aquireWanderTarget();
+		}
+
+		chargeTimer -= HXP.elapsed;
+		if (chargeTimer < 0)
+		{
+			var monster = game.findNearestMonster(x, y);
+			var target = new Point(monster.x - x, monster.y - y);
+			if (target.length > maxChargeDistance)
+			{
+				target.normalize(maxChargeDistance);
+			}
+
+			chargeTimer = chargeCooldown;
+			var charge = DepthCharge.initCharge(x, y, x + target.x, y + target.y, chargeSpeed);
+			if (charge != null) { scene.add(charge); }
 		}
 	}
 

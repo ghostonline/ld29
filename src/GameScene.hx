@@ -11,7 +11,7 @@ class GameScene extends Scene
 	public function new()
 	{
 		super();
-
+		DepthCharge.initPool(25);
 		destroyed = new Array<Ship>();
 		monster = new Monster();
 		add(monster);
@@ -22,6 +22,11 @@ class GameScene extends Scene
 	public function onShipDestroy(ship:Ship)
 	{
 		destroyed.push(ship);
+	}
+
+	public function findNearestMonster(x:Float, y:Float)
+	{
+		return monster;
 	}
 
 	public override function begin()
@@ -46,7 +51,7 @@ class GameScene extends Scene
 		{
 			offscreenY += HXP.screen.height;
 		}
-		
+
 		var shipWanderArea = new Rectangle(0, 0, HXP.screen.width, HXP.screen.height);
 		shipWanderArea.inflate(-50, -50);
 		ship.init(offscreenX, offscreenY, shipWanderArea, Ship.defaultHealth);
