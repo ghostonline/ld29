@@ -41,6 +41,7 @@ class DepthCharge extends Entity
 
 	static inline var maxHeight = 25;
 	static inline var turnRate = 360 * 2;
+	static inline var maxHeightForTopDamage = 0.75;
 	var verticalVelocity:Float;
 	var travelHeight:Float;
 	var moveTween:LinearMotion;
@@ -82,6 +83,20 @@ class DepthCharge extends Entity
 		
 		shadow.originY = travelHeight + shadow.height / 2;
 		shadow.scaleX = Math.max(1 + (travelHeight / maxHeight), 0.5);
+
+		if (moveTween.percent > maxHeightForTopDamage)
+		{
+			var e = collide(Monster.collisionType, x, y);
+			if (e != null)
+			{
+				var monster = cast(e, Monster);
+				if (moveTween.percent == 1 || monster.canTakeTopDamage())
+				{
+					monster.takeDamage();
+					moveTween.active = false;
+				}
+			}
+		}
 
 		if (!moveTween.active)
 		{

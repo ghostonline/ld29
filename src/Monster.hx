@@ -49,6 +49,15 @@ class Monster extends Entity
 		this.x = x; this.y = y;
 	}
 
+	public function takeDamage()
+	{
+	}
+
+	public function canTakeTopDamage()
+	{
+		return swimState == SwimState.Attacking;
+	}
+
 	function surfaceSwimStateUpdate()
 	{
 		movementUpdate(swimSpeed);
