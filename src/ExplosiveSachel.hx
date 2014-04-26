@@ -8,7 +8,7 @@ class ExplosiveSachel extends Entity
 {
 	public static inline var collisionType = "explosivesachel";
 
-	static var pool;
+	static var pool:Array<ExplosiveSachel>;
 	static var lastTaken = 0;
 
 	public static function initPool(count:Int)
