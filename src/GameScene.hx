@@ -62,11 +62,36 @@ class GameScene extends Scene
 			case Level.miner:
 				instance = hangar.miner(offscreenX, offscreenY, shipWanderArea);
 			case Level.submarine:
+				shipWanderArea = selectRandomBorder(shipWanderArea);
 				instance = hangar.submarine(offscreenX, offscreenY, shipWanderArea);
 			}
 
 			if (instance != null) { add(instance); }
 		}
+	}
+
+	function selectRandomBorder(rect:Rectangle)
+	{
+		var factor = HXP.random;
+		if (factor < 0.25)
+		{
+			rect.width = 0;
+		}
+		else if (factor < 0.5)
+		{
+			rect.x += rect.width;
+			rect.width = 0;
+		}
+		else if (factor < 0.75)
+		{
+			rect.height = 0;
+		}
+		else
+		{
+			rect.y += rect.height;
+			rect.height = 0;
+		}
+		return rect;
 	}
 
 	public function onShipDestroy(ship:Ship)
