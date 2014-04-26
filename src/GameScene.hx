@@ -35,9 +35,21 @@ class GameScene extends Scene
 
 	function initShip(ship:Ship)
 	{
+		var offscreenPadding = 25;
+		var offscreenX = HXP.random * (offscreenPadding * 2) - offscreenPadding;
+		var offscreenY = HXP.random * (offscreenPadding * 2) - offscreenPadding;
+		if (offscreenX > 0)
+		{
+			offscreenX += HXP.screen.width;
+		}
+		if (offscreenY > 0)
+		{
+			offscreenY += HXP.screen.height;
+		}
+		
 		var shipWanderArea = new Rectangle(0, 0, HXP.screen.width, HXP.screen.height);
 		shipWanderArea.inflate(-50, -50);
-		ship.init(200, 100, shipWanderArea, Ship.defaultHealth);
+		ship.init(offscreenX, offscreenY, shipWanderArea, Ship.defaultHealth);
 	}
 
 	public override function update()
