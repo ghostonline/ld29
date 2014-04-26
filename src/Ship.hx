@@ -93,12 +93,9 @@ class Ship extends Entity
 		return health > 0;
 	}
 
-	override public function update()
+	function updateSearching()
 	{
-		super.update();
-
 		var monster = game.findNearestMonster(x, y);
-		
 		pursuitTimer -= HXP.elapsed;
 		if (monster.isVisibleFromSurface())
 		{
@@ -107,7 +104,10 @@ class Ship extends Entity
 			currentTarget.y = lastKnownPosition.y = monster.y;
 			alert.visible = true;
 		}
-		
+	}
+
+	function updateAttack()
+	{
 		chargeTimer -= HXP.elapsed;
 		var target = new Point(lastKnownPosition.x - x, lastKnownPosition.y - y);
 		var targetLength = target.length;
@@ -122,8 +122,11 @@ class Ship extends Entity
 			var charge = DepthCharge.initCharge(x, y, x + target.x, y + target.y, chargeSpeed);
 			if (charge != null) { scene.add(charge); }
 		}
+	}
 
-		var minDistance = minTargetDistance;		
+	function updateMovement()
+	{
+		var minDistance = minTargetDistance;
 		if (pursuitTimer > 0)
 		{
 			minDistance = minLaunchDistance;
@@ -141,6 +144,16 @@ class Ship extends Entity
 		layer = Math.floor(-y);
 		alert.x = x;
 		alert.y = y;		
+	}
+
+	override public function update()
+	{
+		super.update();
+
+		updateSearching();
+		updateAttack();
+		updateMovement();
+		
 		alert.visible = pursuitTimer > 0;
 	}
 
