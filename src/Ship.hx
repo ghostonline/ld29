@@ -17,26 +17,30 @@ class Ship extends Entity
 	var currentTarget:Point;
 	var wanderArea:Rectangle;
 	var health:Float;
+	var game:GameScene;
 
-	public function new(){
+	public function new(game:GameScene){
 		super(0,0);
 		horizontalGraphic = Image.createRect(20, 10, Palette.brown);
 		horizontalGraphic.centerOrigin();
 		verticalGraphic = Image.createRect(10, 15, Palette.brown);
 		verticalGraphic.centerOrigin();
-		graphic = horizontalGraphic;
-		setHitboxTo(horizontalGraphic);
+		//graphic = horizontalGraphic;
+		//setHitboxTo(horizontalGraphic);
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
 		type = collisionType;
+		visible = false;
+		this.game = game;
 	}
 
 	public function init(x:Float, y:Float, wanderArea:Rectangle, health:Float)
 	{
 		this.x = x; this.y = y;
 		this.wanderArea = wanderArea;
-		aquireWanderTarget();
 		this.health = health;
+		visible = true;
+		aquireWanderTarget();
 	}
 
 	function aquireWanderTarget()
@@ -61,10 +65,9 @@ class Ship extends Entity
 	public function takeDamage(monster:Monster)
 	{
 		health -= 1;
-		if (health <= 0)
-		{
-			scene.remove(this);
-		}
+		visible = health > 0;
+		game.onShipDestroy(this);
+		return health > 0;
 	}
 
 	override public function update()

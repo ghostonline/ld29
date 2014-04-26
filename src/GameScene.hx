@@ -6,23 +6,47 @@ class GameScene extends Scene
 {
 	var monster:Monster;
 	var ship:Ship;
+	var destroyed:Array<Ship>;
 
 	public function new()
 	{
 		super();
 
+		destroyed = new Array<Ship>();
 		monster = new Monster();
 		add(monster);
-		ship = new Ship();
+		ship = new Ship(this);
 		add(ship);
+	}
+
+	public function onShipDestroy(ship:Ship)
+	{
+		destroyed.push(ship);
 	}
 
 	public override function begin()
 	{
+		super.begin();
+
 		HXP.screen.color = Palette.lightBlue;
 		monster.init(100, 100);
+		initShip(ship);
+	}
+
+	function initShip(ship:Ship)
+	{
 		var shipWanderArea = new Rectangle(0, 0, HXP.screen.width, HXP.screen.height);
 		shipWanderArea.inflate(-50, -50);
 		ship.init(200, 100, shipWanderArea, Ship.defaultHealth);
+	}
+
+	public override function update()
+	{
+		super.update();
+		while (destroyed.length > 0)
+		{
+			var ship = destroyed.pop();
+			initShip(ship);
+		}
 	}
 }
