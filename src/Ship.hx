@@ -18,6 +18,8 @@ class Ship extends Entity
 	static inline var minLaunchDistance = 50;
 	static inline var maxLaunchDistance = 200;
 
+	public var score(default, null):Int;
+
 	var horizontalGraphic:Image;
 	var verticalGraphic:Image;
 	var currentTarget:Point;
@@ -31,6 +33,7 @@ class Ship extends Entity
 
 	public function new(game:GameScene){
 		super(0,0);
+		score = 20;
 		horizontalGraphic = Image.createRect(20, 10, Palette.brown);
 		horizontalGraphic.centerOrigin();
 		verticalGraphic = Image.createRect(10, 15, Palette.brown);

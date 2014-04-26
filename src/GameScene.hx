@@ -28,12 +28,15 @@ class GameScene extends Scene
 		destroyed = new Array<Ship>();
 		monster = new Monster(this);
 		add(monster);
+
 		ship = new Submarine(this);
 		add(ship);
 	}
 
 	public function onShipDestroy(ship:Ship)
 	{
+		score += ship.score;
+		hud.setScore(score);
 		destroyed.push(ship);
 	}
 

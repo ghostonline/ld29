@@ -9,7 +9,9 @@ import com.haxepunk.HXP;
 class Hud extends Entity
 {
 	static inline var scoreTemplate = "%08d";
+	static inline var overflowScoreTemplate = ">%08d";
 	static inline var maxLifeCount = 10;
+	static inline var maxScoreCount = 99999999;
 
 	var scoreLabel:Text;
 	var lifeImages:Array<Image>;
@@ -33,7 +35,13 @@ class Hud extends Entity
 
 	public function setScore(points:Int)
 	{
-		scoreLabel.text = Printf.format(scoreTemplate, [points]);
+		var template = scoreTemplate;
+		if (points > maxScoreCount)
+		{
+			template = overflowScoreTemplate;
+			points = maxScoreCount;
+		}
+		scoreLabel.text = Printf.format(template, [points]);
 		scoreLabel.x = HXP.screen.width - scoreLabel.textWidth;
 	}
 
