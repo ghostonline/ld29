@@ -90,9 +90,9 @@ class Monster extends Entity
 
 		if (lastDirection.x != 0 || lastDirection.y != 0)
 		{
-			updateVisibility();
 			lastDirection.normalize(speed);
 			moveBy(lastDirection.x, lastDirection.y);
+			updateVisibility();
 		}
 	}
 
@@ -104,6 +104,11 @@ class Monster extends Entity
 		{
 			horizontal = attackGraphic;
 			vertical = attackGraphic;
+			layer = Math.floor(-y);
+		}
+		else
+		{
+			layer = 0;
 		}
 
 		var frame:Image = null;

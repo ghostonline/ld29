@@ -56,6 +56,7 @@ class Ship extends Entity
 	{
 		super.update();
 		moveTowards(currentTarget.x, currentTarget.y, speed);
+		layer = Math.floor(-y);
 		if (HXP.distanceSquared(x, y, currentTarget.x, currentTarget.y) < minTargetDistance * minTargetDistance)
 		{
 			aquireWanderTarget();
