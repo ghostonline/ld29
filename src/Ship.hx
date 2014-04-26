@@ -43,7 +43,7 @@ class Ship extends Entity
 		visible = false;
 		this.game = game;
 		chargeTimer = 0;
-		pursuitTimer = 0;
+		pursuitTimer = -1;
 	}
 
 	override public function added()
