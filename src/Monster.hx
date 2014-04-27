@@ -26,10 +26,10 @@ class Monster extends Entity
 	var attackImage:Spritemap;
 	var swimState:SwimState;
 	var attackTimer:Float;
-	var attackPreparation:Float;
 	var markedTimer:Float;
 	var alert:AlertIcon;
 	var game:GameScene;
+	var triggerAttackNow:Bool;
 
 	public function new(game:GameScene)
 	{
@@ -40,9 +40,8 @@ class Monster extends Entity
 		swimImage.play("default");
 		swimImage.scale = 2;
 		swimImage.centerOrigin();
-		attackImage = new Spritemap("graphics/monster-attack.png", 24, 19);
+		attackImage = new Spritemap("graphics/monster-attack.png", 24, 19, teethDown);
 		attackImage.add("default", [0,1,2], 4);
-		attackImage.play("default");
 		attackImage.scale = 2;
 		attackImage.centerOrigin();
 		graphic = swimImage;
@@ -52,6 +51,11 @@ class Monster extends Entity
 		type = collisionType;
 		markedTimer = -1;
 		alert = AlertIcon.createArrow();
+	}
+
+	function teethDown()
+	{
+		triggerAttackNow = true;
 	}
 
 	public function init(x:Float, y:Float)
@@ -96,8 +100,8 @@ class Monster extends Entity
 		{
 			swimState = SwimState.Attacking;
 			attackImage.play("default", true);
+			triggerAttackNow = false;
 			attackTimer = 0;
-			attackPreparation = 0;
 			updateVisibility();
 		}
 	}
@@ -106,10 +110,9 @@ class Monster extends Entity
 	{
 		movementUpdate(attackSpeed);
 		attackTimer += HXP.elapsed;
-		attackPreparation += HXP.elapsed;
-		if (attackPreparation >= attackInterval)
+		if (triggerAttackNow)
 		{
-			attackPreparation = 0;
+			triggerAttackNow = false;
 			var e = collide(Ship.collisionType, x, y);
 			if (e != null)
 			{
