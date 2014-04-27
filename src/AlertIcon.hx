@@ -1,5 +1,6 @@
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.graphics.Text;
 
 class AlertIcon extends Entity
@@ -18,9 +19,12 @@ class AlertIcon extends Entity
 	public static function createArrow()
 	{
 		var icon = new AlertIcon();
-		var iconGraphic = new Text("V", 0, 0, 0, 0, {size:24});
-		iconGraphic.originX = iconGraphic.textWidth * 0.5;
-		iconGraphic.originY = 40 + iconGraphic.textHeight * 0.5;
+		var iconGraphic = new Spritemap("graphics/detected.png", 6, 8);
+		iconGraphic.add("default", [0, 1], 4);
+		iconGraphic.scale = 2;
+		iconGraphic.centerOrigin();
+		iconGraphic.originY += 20;
+		iconGraphic.play("default");
 		icon.graphic = iconGraphic;
 		return icon;
 	}
