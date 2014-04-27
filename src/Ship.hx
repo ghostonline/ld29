@@ -34,9 +34,9 @@ class Ship extends Entity
 	public function new(game:GameScene){
 		super(0,0);
 		score = 20;
-		horizontalGraphic = Image.createRect(20, 10, Palette.brown);
+		horizontalGraphic = Image.createRect(50, 10, Palette.brown);
 		horizontalGraphic.centerOrigin();
-		verticalGraphic = Image.createRect(10, 15, Palette.brown);
+		verticalGraphic = Image.createRect(10, 25, Palette.brown);
 		verticalGraphic.centerOrigin();
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
