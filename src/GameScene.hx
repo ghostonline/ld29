@@ -28,6 +28,7 @@ class GameScene extends Scene
 		ExplosiveSachel.initPool(25);
 		Mine.initPool(50);
 		Torpedo.initPool(25);
+		Debris.initPool(50, this);
 		destroyed = new Array<Ship>();
 		monster = new Monster(this);
 		add(monster);

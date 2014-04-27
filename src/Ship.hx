@@ -18,6 +18,8 @@ class Ship extends Entity
 	static inline var maxChargeDistance = 150;
 	static inline var minLaunchDistance = 50;
 	static inline var maxLaunchDistance = 200;
+	static inline var debrisCount = 3;
+	static inline var dieDebrisCount = 2;
 
 	public var score(default, null):Int;
 
@@ -97,10 +99,18 @@ class Ship extends Entity
 	{
 		health -= 1;
 		visible = health > 0;
+		for (ii in 0...debrisCount)
+		{
+			Debris.create(x, y, chargeSpeed * 0.5 + chargeSpeed * 0.5 * HXP.random);
+		}
 		if (health <= 0)
 		{
 			visible = false;
 			game.onShipDestroy(this);
+			for (ii in 0...dieDebrisCount)
+			{
+				Debris.create(x, y, chargeSpeed * 0.5 + chargeSpeed * 0.5 * HXP.random);
+			}
 		}
 		return health > 0;
 	}
