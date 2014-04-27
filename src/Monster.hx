@@ -1,5 +1,6 @@
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.math.Vector;
 import flash.geom.Point;
 import com.haxepunk.HXP;
@@ -21,9 +22,8 @@ class Monster extends Entity
 
 	static var lastDirection:Point;
 
-	var horizontalGraphic:Image;
-	var verticalGraphic:Image;
-	var attackGraphic:Image;
+	var swimImage:Spritemap;
+	var attackImage:Spritemap;
 	var swimState:SwimState;
 	var attackTimer:Float;
 	var attackPreparation:Float;
@@ -35,15 +35,18 @@ class Monster extends Entity
 	{
 		super(0,0);
 		this.game = game;
-		horizontalGraphic = Image.createRect(40, 20, Palette.blue);
-		horizontalGraphic.centerOrigin();
-		verticalGraphic = Image.createRect(20, 30, Palette.blue);
-		verticalGraphic.centerOrigin();
-		attackGraphic = Image.createRect(30, 30, Palette.red);
-		attackGraphic.centerOrigin();
-		attackGraphic.originY = attackGraphic.height;
-		graphic = horizontalGraphic;
-		setHitboxTo(horizontalGraphic);
+		swimImage = new Spritemap("graphics/monster-swim.png", 24, 16);
+		swimImage.add("default", [0,1,2,3,4,5,6,7], 8);
+		swimImage.play("default");
+		swimImage.scale = 2;
+		swimImage.centerOrigin();
+		attackImage = new Spritemap("graphics/monster-attack.png", 24, 19);
+		attackImage.add("default", [0,1,2], 4);
+		attackImage.play("default");
+		attackImage.scale = 2;
+		attackImage.centerOrigin();
+		graphic = swimImage;
+		setHitboxTo(swimImage);
 		lastDirection = new Point();
 		swimState = SwimState.SurfaceSwim;
 		type = collisionType;
@@ -154,28 +157,18 @@ class Monster extends Entity
 
 	function updateVisibility()
 	{
-		var horizontal = horizontalGraphic;
-		var vertical = verticalGraphic;
+		var frame = swimImage;
 		if (swimState == SwimState.Attacking)
 		{
-			horizontal = attackGraphic;
-			vertical = attackGraphic;
+			frame = attackImage;
 			layer = Math.floor(-y);
 		}
 		else
 		{
+			frame.angle = HXP.angle(0, 0, lastDirection.x, lastDirection.y);
 			layer = Layering.surface;
 		}
 
-		var frame:Image = null;
-		if (Math.abs(lastDirection.x) > Math.abs(lastDirection.y))
-		{
-			frame = horizontal;
-		}
-		else
-		{
-			frame = vertical;
-		}
 
 		setHitboxTo(frame);
 		graphic = frame;
