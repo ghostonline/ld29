@@ -39,6 +39,8 @@ class TitleScene extends Scene
 
 	override public function begin()
 	{
+		super.begin();
+
 		HXP.screen.color = Palette.lightBlue;
 		title.x = (HXP.screen.width - title.textWidth) / 2;
 		title.y = 100;
