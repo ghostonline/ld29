@@ -132,15 +132,16 @@ class GameScene extends Scene
 				popupText = levelUpText + Printf.format(bonusScoreText, [overflowScore]);
 				score += overflowScore;
 			}
+			SoundBoard.levelUp();
 		}
 		else
 		{
 			popupText = Printf.format(bonusScoreText, [ship.score]);
 			score += ship.score;
+			SoundBoard.score();
 		}
 		
 		ScorePopup.create(ship.x, ship.y, popupText);
-		SoundBoard.score();
 
 		hud.setScore(score);
 		hud.setLife(life);

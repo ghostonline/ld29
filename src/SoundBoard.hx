@@ -18,10 +18,12 @@ class SoundBoard
 	];
 
 	static var pickupName = "audio/Pickup_Coin.wav";
+	static var levelupName = "audio/LevelUp.wav";
 
 	static var explosions:Array<Sfx>;
 	static var hits:Array<Sfx>;
 	static var pickup:Sfx;
+	static var levelup:Sfx;
 
 	inline public static function preload(files:Array<String>, array:Array<Sfx>)
 	{
@@ -44,6 +46,7 @@ class SoundBoard
 		preload(explosionNames, explosions);
 		preload(hitNames, hits);
 		pickup = new Sfx(pickupName);
+		levelup = new Sfx(levelupName);
 	}
 
 	public static function explosion()
@@ -59,5 +62,10 @@ class SoundBoard
 	public static function score()
 	{
 		if (!pickup.playing) pickup.play();
+	}
+
+	public static function levelUp()
+	{
+		if (!levelup.playing) levelup.play();
 	}
 }
