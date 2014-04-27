@@ -24,7 +24,7 @@ class GameOverScene extends Scene
 	public function new(score:Int){
 		super();
 
-		slain = new Text(slainText);
+		slain = new Text(slainText, 0, 0, 0, {font:"font/DoubleFeature20.ttf"});
 		slain.size = 32;
 		addGraphic(slain);
 
