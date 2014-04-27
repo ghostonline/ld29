@@ -95,6 +95,7 @@ class Monster extends Entity
 		if (Controller.attack())
 		{
 			swimState = SwimState.Attacking;
+			attackImage.play("default", true);
 			attackTimer = 0;
 			attackPreparation = 0;
 			updateVisibility();
@@ -119,6 +120,7 @@ class Monster extends Entity
 
 		if (!Controller.attack() && attackTimer > minAttackDuration)
 		{
+			attackImage.setFrame(0);
 			swimState = SwimState.SurfaceSwim;
 			updateVisibility();
 		}
@@ -169,8 +171,13 @@ class Monster extends Entity
 			layer = Layering.surface;
 		}
 
+		setHitbox(
+			Math.floor(frame.height * frame.scale * 0.75),
+			Math.floor(frame.height * frame.scale * 0.75),
+			Math.floor(frame.originY * frame.scale * 0.75),
+			Math.floor(frame.originY * frame.scale * 0.75)
+			);
 
-		setHitboxTo(frame);
 		graphic = frame;
 
 		alert.visible = markedTimer > 0;
