@@ -13,6 +13,7 @@ class GameScene extends Scene
 	var life:Int;
 	var score:Int;
 	var levelDeathCount:Int;
+	var level:Int;
 
 	public function new()
 	{
@@ -21,6 +22,7 @@ class GameScene extends Scene
 		add(hud);
 		life = initialLife;
 		score = 0;
+		level = 0;
 		hud.setScore(score);
 		hud.setLife(life);
 		ExplosiveSachel.initPool(25);
@@ -107,6 +109,12 @@ class GameScene extends Scene
 		remove(ship);
 		
 		--levelDeathCount;
+		if (levelDeathCount == 0)
+		{
+			++level;
+			if (level >= Level.levels.length) { level = Level.levels.length - 1; }
+			loadLevel(Level.levels[level]);
+		}
 	}
 
 	public function onMonsterHit(monster:Monster)
@@ -131,6 +139,6 @@ class GameScene extends Scene
 		HXP.screen.color = Palette.lightBlue;
 		monster.init(100, 100);
 
-		loadLevel(Level.levels[0]);
+		loadLevel(Level.levels[level]);
 	}
 }
