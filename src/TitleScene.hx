@@ -23,8 +23,8 @@ class TitleScene extends Scene
 	public function new(){
 		super();
 
-		title = new Text(titleName);
-		title.size = 52;
+		title = new Text(titleName, 0, 0, 0, {font:"font/DoubleFeature20.ttf"});
+		title.size = 64;
 		addGraphic(title);
 
 		prompt = new Text(promptText);
