@@ -17,8 +17,11 @@ class SoundBoard
 		"audio/Hit_Hurt3.wav",
 	];
 
+	static var pickupName = "audio/Pickup_Coin.wav";
+
 	static var explosions:Array<Sfx>;
 	static var hits:Array<Sfx>;
+	static var pickup:Sfx;
 
 	inline public static function preload(files:Array<String>, array:Array<Sfx>)
 	{
@@ -40,6 +43,7 @@ class SoundBoard
 		hits = new Array<Sfx>();
 		preload(explosionNames, explosions);
 		preload(hitNames, hits);
+		pickup = new Sfx(pickupName);
 	}
 
 	public static function explosion()
@@ -50,5 +54,10 @@ class SoundBoard
 	public static function hit()
 	{
 		playRandom(hits);
+	}
+
+	public static function score()
+	{
+		if (!pickup.playing) pickup.play();
 	}
 }

@@ -107,6 +107,7 @@ class GameScene extends Scene
 	public function onShipDestroy(ship:Ship)
 	{
 		ScorePopup.create(ship.x, ship.y, "+" + ship.score);
+		SoundBoard.score();
 		score += ship.score;
 		hud.setScore(score);
 		remove(ship);
