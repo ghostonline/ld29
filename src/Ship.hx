@@ -42,9 +42,16 @@ class Ship extends Entity
 		image.scale = 2;
 		image.centerOrigin();
 		image.originY *= 1.75;
-		setHitboxTo(image);
 		image.play("bomber");
 		graphic = image;
+
+		setHitbox(
+			Math.floor(image.width * image.scale),
+			Math.floor(image.height * image.scale),
+			Math.floor(image.originX * image.scale),
+			Math.floor(image.originY * image.scale)
+			);
+
 
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
@@ -90,7 +97,11 @@ class Ship extends Entity
 	{
 		health -= 1;
 		visible = health > 0;
-		game.onShipDestroy(this);
+		if (health <= 0)
+		{
+			visible = false;
+			game.onShipDestroy(this);
+		}
 		return health > 0;
 	}
 
