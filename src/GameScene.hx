@@ -105,6 +105,10 @@ class GameScene extends Scene
 	{
 		--life;
 		hud.setLife(life);
+		if (life < 0)
+		{
+			HXP.scene = new GameOverScene(score);
+		}
 	}
 
 	public function findNearestMonster(x:Float, y:Float)
