@@ -44,6 +44,7 @@ class Monster extends Entity
 		attackImage.add("default", [0,1,2], 4);
 		attackImage.scale = 2;
 		attackImage.centerOrigin();
+		attackImage.originY *= 1.75;
 		graphic = swimImage;
 		setHitboxTo(swimImage);
 		lastDirection = new Point();
@@ -167,19 +168,25 @@ class Monster extends Entity
 		{
 			frame = attackImage;
 			layer = Math.floor(-y);
+			
+			setHitbox(
+				Math.floor(frame.width * frame.scale * 0.75),
+				Math.floor(frame.height * frame.scale * 0.75),
+				Math.floor(frame.originX * frame.scale * 0.75),
+				Math.floor(frame.originY * frame.scale * 0.75)
+				);
 		}
 		else
 		{
 			frame.angle = HXP.angle(0, 0, lastDirection.x, lastDirection.y);
 			layer = Layering.surface;
+			setHitbox(
+				Math.floor(frame.height * frame.scale * 0.75),
+				Math.floor(frame.height * frame.scale * 0.75),
+				Math.floor(frame.originY * frame.scale * 0.75),
+				Math.floor(frame.originY * frame.scale * 0.75)
+				);
 		}
-
-		setHitbox(
-			Math.floor(frame.height * frame.scale * 0.75),
-			Math.floor(frame.height * frame.scale * 0.75),
-			Math.floor(frame.originY * frame.scale * 0.75),
-			Math.floor(frame.originY * frame.scale * 0.75)
-			);
 
 		graphic = frame;
 
