@@ -76,7 +76,7 @@ class Debris extends Entity
 		shadow.originY = travelHeight + shadow.height / 2;
 		shadow.scaleX = Math.max(1 + (travelHeight / maxHeight), 0.5);
 
-		layer = -Math.floor(y + travelHeight);
+		layer = -Math.floor(y - travelHeight);
 
 		if (!moveTween.active)
 		{
