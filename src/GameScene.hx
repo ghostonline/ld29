@@ -1,10 +1,16 @@
 import com.haxepunk.Scene;
 import com.haxepunk.HXP;
+import de.polygonal.Printf;
 import flash.geom.Rectangle;
 
 class GameScene extends Scene
 {
 	static inline var initialLife = 5;
+	static inline var maxLife = 10;
+	static inline var overflowScore = 1000;
+	static inline var levelUpText = "Level up!\n";
+	static inline var bonusLifeText = "+1 life";
+	static inline var bonusScoreText = "+%d score";
 
 	var monster:Monster;
 	var hangar:Hangar;
@@ -106,19 +112,38 @@ class GameScene extends Scene
 
 	public function onShipDestroy(ship:Ship)
 	{
-		ScorePopup.create(ship.x, ship.y, "+" + ship.score);
-		SoundBoard.score();
-		score += ship.score;
-		hud.setScore(score);
 		remove(ship);
 
 		--levelDeathCount;
+		var popupText = "";
 		if (levelDeathCount == 0)
 		{
 			++level;
 			if (level >= Level.levels.length) { level = Level.levels.length - 1; }
 			loadLevel(Level.levels[level]);
+
+			if (life < maxLife)
+			{
+				popupText = levelUpText + bonusLifeText;
+				++life;
+			}
+			else
+			{
+				popupText = levelUpText + Printf.format(bonusScoreText, [overflowScore]);
+				score += overflowScore;
+			}
 		}
+		else
+		{
+			popupText = Printf.format(bonusScoreText, [ship.score]);
+			score += ship.score;
+		}
+		
+		ScorePopup.create(ship.x, ship.y, popupText);
+		SoundBoard.score();
+
+		hud.setScore(score);
+		hud.setLife(life);
 	}
 
 	public function onMonsterHit(monster:Monster)
