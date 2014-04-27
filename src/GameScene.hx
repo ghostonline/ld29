@@ -12,6 +12,7 @@ class GameScene extends Scene
 	var hud:Hud;
 	var life:Int;
 	var score:Int;
+	var levelDeathCount:Int;
 
 	public function new()
 	{
@@ -34,6 +35,7 @@ class GameScene extends Scene
 
 	function loadLevel(level:String)
 	{
+		levelDeathCount = 0;
 		for (idx in 0...level.length)
 		{
 			var offscreenPadding = 25;
@@ -66,7 +68,11 @@ class GameScene extends Scene
 				instance = hangar.submarine(offscreenX, offscreenY, shipWanderArea);
 			}
 
-			if (instance != null) { add(instance); }
+			if (instance != null)
+			{ 
+				add(instance);
+				++levelDeathCount;
+			}
 		}
 	}
 
@@ -99,6 +105,8 @@ class GameScene extends Scene
 		score += ship.score;
 		hud.setScore(score);
 		remove(ship);
+		
+		--levelDeathCount;
 	}
 
 	public function onMonsterHit(monster:Monster)
