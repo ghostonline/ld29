@@ -27,11 +27,7 @@ class Scanner extends Ship
 			currentTarget.x = lastKnownPosition.x = monster.x;
 			currentTarget.y = lastKnownPosition.y = monster.y;
 			alert.visible = true;
-			monster.setMarked(true);
-		}
-		else
-		{
-			monster.setMarked(false);
+			monster.setMarked();
 		}
 	}
 

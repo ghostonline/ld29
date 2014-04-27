@@ -17,6 +17,7 @@ class Monster extends Entity
 	static inline var attackSpeed = 1;
 	static inline var minAttackDuration = 1;
 	static inline var attackInterval = 0.75;
+	static inline var markTimeout = 2;
 
 	static var lastDirection:Point;
 
@@ -26,7 +27,7 @@ class Monster extends Entity
 	var swimState:SwimState;
 	var attackTimer:Float;
 	var attackPreparation:Float;
-	var marked:Bool;
+	var markedTimer:Float;
 	var alert:AlertIcon;
 	var game:GameScene;
 
@@ -46,7 +47,7 @@ class Monster extends Entity
 		lastDirection = new Point();
 		swimState = SwimState.SurfaceSwim;
 		type = collisionType;
-		marked = false;
+		markedTimer = -1;
 		alert = AlertIcon.createArrow();
 	}
 
@@ -55,10 +56,9 @@ class Monster extends Entity
 		this.x = x; this.y = y;
 	}
 	
-	public function setMarked(marked:Bool)
+	public function setMarked()
 	{
-		this.marked = marked;
-		alert.visible = this.marked;
+		markedTimer = markTimeout;
 	}
 
 	override public function added()
@@ -78,7 +78,7 @@ class Monster extends Entity
 
 	public function isVisibleFromSurface()
 	{
-		return swimState == SwimState.Attacking;
+		return swimState == SwimState.Attacking || markedTimer > 0;
 	}
 
 	public function canTakeTopDamage()
@@ -179,11 +179,15 @@ class Monster extends Entity
 
 		setHitboxTo(frame);
 		graphic = frame;
+
+		alert.visible = markedTimer > 0;
 	}
 
 	override public function update()
 	{
 		super.update();
+
+		markedTimer -= HXP.elapsed;
 
 		switch(swimState)
 		{
