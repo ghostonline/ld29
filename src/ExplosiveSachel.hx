@@ -36,7 +36,8 @@ class ExplosiveSachel extends Entity
 		shadow = Image.createRect(10, 5, Palette.blue);
 		shadow.centerOrigin();
 		addGraphic(shadow);
-		image = Image.createRect(10, 5, Palette.red);
+		image = new Image("graphics/sachel.png");
+		image.scale = 2;
 		image.centerOrigin();
 		addGraphic(image);
 		moveTween = new LinearMotion(null, TweenType.Persist);

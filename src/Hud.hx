@@ -23,8 +23,9 @@ class Hud extends Entity
 		lifeImages = new Array<Image>();
 		for (ii in 0...maxLifeCount)
 		{
-			var img = Image.createCircle(10, Palette.red);
-			img.x = img.width * ii;
+			var img = new Image("graphics/life.png");
+			img.scale = 2;
+			img.x = (img.width * img.scale + 2) * ii;
 			img.visible = false;
 			lifeImages.push(img);
 			addGraphic(img);
