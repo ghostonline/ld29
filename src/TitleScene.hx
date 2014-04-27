@@ -11,10 +11,12 @@ class TitleScene extends Scene
 
 	static inline var titleName = "Deep terror";
 	static inline var promptText = "Click to start the game...";
+	static inline var authorText = "Ludum Dare 29 entry by GhostOnline.";
 	static inline var fadeSpeed = 2;
 
 	var title:Text;
 	var prompt:Text;
+	var author:Text;
 
 	var fadeAwayTween:NumTween;
 
@@ -28,6 +30,9 @@ class TitleScene extends Scene
 		prompt = new Text(promptText);
 		addGraphic(prompt);
 
+		author = new Text(authorText);
+		addGraphic(author);
+
 		fadeAwayTween = new NumTween(onTweenDone, TweenType.Persist);
 		addTween(fadeAwayTween);
 	}
@@ -40,6 +45,9 @@ class TitleScene extends Scene
 		
 		prompt.x = (HXP.screen.width - prompt.textWidth) / 2;
 		prompt.y = 200;
+		
+		author.y = HXP.screen.height - author.textHeight;
+		author.x = 0;
 	}
 
 	function onTweenDone(tweener)
@@ -58,7 +66,7 @@ class TitleScene extends Scene
 		else if (fadeAwayTween.active)
 		{
 			title.y = fadeAwayTween.value;
-			prompt.alpha = 1 - Macro.smoothstep(fadeAwayTween.percent) * 2;
+			author.alpha = prompt.alpha = 1 - Macro.smoothstep(fadeAwayTween.percent) * 2;
 		}
 	}
 }
