@@ -155,9 +155,15 @@ class Monster extends Entity
 		{
 			lastDirection.normalize(speed);
 			moveBy(lastDirection.x, lastDirection.y);
+			if (x < 0) {x = 0;}
+			if (y < 0) {y = 0;}
+			if (x > HXP.screen.width) {x = HXP.screen.width;}
+			if (y > HXP.screen.height) {y = HXP.screen.height;}
+
 			updateVisibility();
 			alert.x = x;
 			alert.y = y;
+
 		}
 	}
 
