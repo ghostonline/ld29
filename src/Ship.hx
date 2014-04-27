@@ -1,5 +1,6 @@
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Spritemap;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import com.haxepunk.HXP;
@@ -20,8 +21,7 @@ class Ship extends Entity
 
 	public var score(default, null):Int;
 
-	var horizontalGraphic:Image;
-	var verticalGraphic:Image;
+	var image:Spritemap;
 	var currentTarget:Point;
 	var wanderArea:Rectangle;
 	var health:Float;
@@ -34,10 +34,18 @@ class Ship extends Entity
 	public function new(game:GameScene){
 		super(0,0);
 		score = 20;
-		horizontalGraphic = Image.createRect(50, 10, Palette.brown);
-		horizontalGraphic.centerOrigin();
-		verticalGraphic = Image.createRect(10, 25, Palette.brown);
-		verticalGraphic.centerOrigin();
+		image = new Spritemap("graphics/ships.png", 32, 24);
+		image.add("bomber", [0, 1, 2, 3], 4);
+		image.add("miner", [4, 5, 6, 7], 4);
+		image.add("scanner", [8, 9, 10, 11], 4);
+		image.add("submarine", [12, 13, 14, 15], 4);
+		image.scale = 2;
+		image.centerOrigin();
+		image.originY *= 1.75;
+		setHitboxTo(image);
+		image.play("bomber");
+		graphic = image;
+
 		currentTarget = new Point();
 		wanderArea = new Rectangle();
 		alert = AlertIcon.createExclamation();
@@ -76,16 +84,6 @@ class Ship extends Entity
 
 		var dX = Math.abs(currentTarget.x - x);
 		var dY = Math.abs(currentTarget.y - y);
-		if (dX > dY)
-		{
-			graphic = horizontalGraphic;
-			setHitboxTo(horizontalGraphic);
-		}
-		else
-		{
-			graphic = verticalGraphic;
-			setHitboxTo(verticalGraphic);
-		}
 	}
 
 	public function takeDamage(monster:Monster)
@@ -137,6 +135,8 @@ class Ship extends Entity
 		
 		if (HXP.distanceSquared(x, y, currentTarget.x, currentTarget.y) > minDistance * minDistance)
 		{
+			if (x > currentTarget.x) { image.scaleX = -1; }
+			else { image.scaleX = 1; }
 			moveTowards(currentTarget.x, currentTarget.y, speed);
 		}
 		else if (pursuitTimer < 0)

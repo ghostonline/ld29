@@ -9,25 +9,13 @@ class Submarine extends Ship
 	
 	public function new(game:GameScene){
 		super(game);
+		image.play("submarine");
 	}
 
 	override function aquireWanderTarget()
 	{
 		currentTarget.x = HXP.random * wanderArea.width + wanderArea.x;
 		currentTarget.y = HXP.random * wanderArea.height + wanderArea.y;
-
-		var dX = Math.abs(currentTarget.x - x);
-		var dY = Math.abs(currentTarget.y - y);
-		if (dX > dY)
-		{
-			graphic = horizontalGraphic;
-			setHitboxTo(horizontalGraphic);
-		}
-		else
-		{
-			graphic = verticalGraphic;
-			setHitboxTo(verticalGraphic);
-		}
 	}
 
 	override function updateSearching()

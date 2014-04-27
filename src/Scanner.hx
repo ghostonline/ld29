@@ -12,6 +12,7 @@ class Scanner extends Ship
 
 	public function new(game:GameScene){
 		super(game);
+		image.play("scanner");
 	}
 
 	override function updateSearching()

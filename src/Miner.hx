@@ -7,6 +7,7 @@ class Miner extends Ship
 	
 	public function new(game:GameScene){
 		super(game);
+		image.play("miner");
 	}
 
 	override function updateSearching()
