@@ -21,13 +21,17 @@ class Scanner extends Ship
 		var monster = game.findNearestMonster(x, y);
 		var dX = Math.abs(monster.x - x);
 		var dY = Math.abs(monster.y - y);
-		if (dX < scanWidth / 2 && dY < scanHeight / 2)
+		var inScanRange = dX < scanWidth / 2 && dY < scanHeight / 2;
+		if (inScanRange || monster.isVisibleFromSurface())
 		{
 			pursuitTimer = maxPursuitTime;
 			currentTarget.x = lastKnownPosition.x = monster.x;
 			currentTarget.y = lastKnownPosition.y = monster.y;
 			alert.visible = true;
-			monster.setMarked();
+			if (inScanRange)
+			{
+				monster.setMarked();
+			}
 		}
 	}
 
