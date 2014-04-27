@@ -5,5 +5,7 @@ class Level
 	public static inline var miner = "3";
 	public static inline var submarine = "4";
 
-	public static inline var level1 = "12341234";
+	public static var levels = [
+		"12341234"
+	];
 }

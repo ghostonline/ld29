@@ -123,6 +123,6 @@ class GameScene extends Scene
 		HXP.screen.color = Palette.lightBlue;
 		monster.init(100, 100);
 
-		loadLevel(Level.level1);
+		loadLevel(Level.levels[0]);
 	}
 }
