@@ -79,6 +79,7 @@ class ExplosiveSachel extends Entity
 					monster.takeDamage();
 					moveTween.active = false;
 				}
+				SoundBoard.explosion();
 			}
 		}
 
