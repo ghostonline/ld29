@@ -6,6 +6,7 @@ class Main extends Engine
 
 	override public function init()
 	{
+		SoundBoard.init();
 #if debug
 		HXP.console.enable();
 #end

@@ -99,6 +99,7 @@ class Ship extends Entity
 	{
 		health -= 1;
 		visible = health > 0;
+		SoundBoard.hit();
 		for (ii in 0...debrisCount)
 		{
 			Debris.create(x, y, chargeSpeed * 0.5 + chargeSpeed * 0.5 * HXP.random);
