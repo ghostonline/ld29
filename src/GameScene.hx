@@ -29,6 +29,7 @@ class GameScene extends Scene
 		Mine.initPool(50);
 		Torpedo.initPool(25);
 		Debris.initPool(50, this);
+		ScorePopup.initPool(25, this);
 		destroyed = new Array<Ship>();
 		monster = new Monster(this);
 		add(monster);
@@ -105,10 +106,11 @@ class GameScene extends Scene
 
 	public function onShipDestroy(ship:Ship)
 	{
+		ScorePopup.create(ship.x, ship.y, "+" + ship.score);
 		score += ship.score;
 		hud.setScore(score);
 		remove(ship);
-		
+
 		--levelDeathCount;
 		if (levelDeathCount == 0)
 		{
