@@ -85,6 +85,7 @@ class ExplosiveSachel extends Entity
 
 		if (!moveTween.active)
 		{
+			WaterEmitter.splash(x, y);
 			visible = false;
 			scene.remove(this);
 		}

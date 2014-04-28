@@ -61,6 +61,7 @@ class Torpedo extends Entity
 			var monster = cast(e, Monster);
 			monster.takeDamage();
 			lifeTimer = 0;
+			WaterEmitter.splash(x, y);
 			SoundBoard.explosion();
 		}
 
