@@ -36,6 +36,7 @@ class GameScene extends Scene
 		Torpedo.initPool(25);
 		Debris.initPool(50, this);
 		ScorePopup.initPool(25, this);
+		WaterEmitter.init(this);
 		destroyed = new Array<Ship>();
 		monster = new Monster(this);
 		add(monster);

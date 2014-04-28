@@ -78,6 +78,7 @@ class Mine extends Entity
 
 		if (lifeTimer < 0)
 		{
+			WaterEmitter.splash(x, y);
 			visible = false;
 			scene.remove(this);
 		}

@@ -15,5 +15,5 @@ class Palette
         public static inline var color13 = Macro.color(210, 170, 153);
         public static inline var color14 = Macro.color(109, 194, 202);
         public static inline var color15 = Macro.color(218, 212, 94);
-        public static inline var color16 = Macro.color(222, 238, 214);
+        public static inline var white = Macro.color(222, 238, 214);
 }
