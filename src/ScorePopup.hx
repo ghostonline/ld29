@@ -32,16 +32,10 @@ class ScorePopup extends Entity
 		label = new Text("");
 		graphic = label;
 		targetScene = scene;
-		drifter = new LinearMotion(onDestroy, TweenType.Persist);
+		drifter = new LinearMotion(null, TweenType.Persist);
 		addTween(drifter);
 		visible = false;
 		layer = Layering.hud;
-	}
-
-	function onDestroy(tween)
-	{
-		scene.remove(this);
-		visible = false;
 	}
 
 	public function init(x:Float, y:Float, text:String)
@@ -60,5 +54,11 @@ class ScorePopup extends Entity
 		super.update();
 		x = drifter.x;
 		y = drifter.y;
+
+		if (!drifter.active)
+		{
+			scene.remove(this);
+			visible = false;
+		}
 	}
 }
