@@ -54,7 +54,7 @@ class TitleScene extends Scene
 
 	function onTweenDone(tweener)
 	{
-		HXP.scene = new GameScene();
+		HXP.scene = new Tutorial();
 	}
 
 	override public function update()
