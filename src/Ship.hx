@@ -8,7 +8,7 @@ import com.haxepunk.HXP;
 class Ship extends Entity
 {
 	public static inline var collisionType = "ship";
-	public static inline var defaultHealth = 3;
+	public static inline var defaultHealth = 2;
 	public static inline var maxPursuitTime = 5;
 
 	static inline var speed = 1;
@@ -35,7 +35,7 @@ class Ship extends Entity
 
 	public function new(game:GameScene){
 		super(0,0);
-		score = 20;
+		score = 200;
 		image = new Spritemap("graphics/ships.png", 32, 24);
 		image.add("bomber", [0, 1, 2, 3], 4);
 		image.add("miner", [4, 5, 6, 7], 4);
