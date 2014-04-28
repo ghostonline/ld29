@@ -115,8 +115,9 @@ class Monster extends Entity
 		if (triggerAttackNow)
 		{
 			triggerAttackNow = false;
-			var e = collide(Ship.collisionType, x, y);
-			if (e != null)
+			var collideArray = new Array<Entity>();
+			collideInto(Ship.collisionType, x, y, collideArray);
+			for (e in collideArray)
 			{
 				var ship = cast(e, Ship);
 				ship.takeDamage(this);
