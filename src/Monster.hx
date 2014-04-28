@@ -41,7 +41,7 @@ class Monster extends Entity
 		swimImage.scale = 2;
 		swimImage.centerOrigin();
 		attackImage = new Spritemap("graphics/monster-attack.png", 24, 19, teethDown);
-		attackImage.add("default", [0,1,2], 4);
+		attackImage.add("default", [2,0,1], 4);
 		attackImage.scale = 2;
 		attackImage.centerOrigin();
 		attackImage.originY *= 1.75;
@@ -104,6 +104,7 @@ class Monster extends Entity
 			triggerAttackNow = false;
 			attackTimer = 0;
 			updateVisibility();
+			WaterEmitter.monsterSplash(x, y);
 		}
 	}
 
@@ -120,12 +121,14 @@ class Monster extends Entity
 				var ship = cast(e, Ship);
 				ship.takeDamage(this);
 			}
+			WaterEmitter.monsterSplash(x, y);
 		}
 
 		if (!Controller.attack() && attackTimer > minAttackDuration)
 		{
 			attackImage.setFrame(0);
 			swimState = SwimState.SurfaceSwim;
+			WaterEmitter.monsterSplash(x, y);
 			updateVisibility();
 		}
 	}

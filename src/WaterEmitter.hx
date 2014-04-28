@@ -11,7 +11,7 @@ class WaterEmitter extends Entity
 
 	public static function init(scene:Scene)
 	{
-		var emitter = new Emitter(new BitmapData(4,4, false, 0xFFFFFFFF));
+		var emitter = new Emitter(new BitmapData(3,3, false, 0xFFFFFFFF));
 		var particle = emitter.newType("splash");
 		particle.setAlpha(1, 0, Ease.sineOut);
 		particle.setColor(Palette.blue, Palette.blue);
@@ -33,9 +33,16 @@ class WaterEmitter extends Entity
 		instance.doSplash(x, y);
 	}
 
+	public static function monsterSplash(x:Float, y:Float)
+	{
+		instance.doMonsterSplash(x, y);
+	}
+
 	var emitter:Emitter;
 	static inline var splashParticleCount = 10;
 	static inline var splashAirParticleCount = 5;
+	static inline var monsterSplashParticleCount = 20;
+	static inline var monsterSplashAirParticleCount = 15;
 
 	public function new(emitter:Emitter){
 		super(0,0);
@@ -53,6 +60,18 @@ class WaterEmitter extends Entity
 		for (ii in 0...splashAirParticleCount)
 		{
 			emitter.emitInRectangle("air", x, y, 10, 5);
+		}
+	}
+	
+	function doMonsterSplash(x:Float, y:Float)
+	{
+		for (ii in 0...monsterSplashParticleCount)
+		{
+			emitter.emitInRectangle("splash", x, y, 32, 10);
+		}
+		for (ii in 0...monsterSplashAirParticleCount)
+		{
+			emitter.emitInRectangle("air", x - 16, y, 32, 10);
 		}
 	}
 }
